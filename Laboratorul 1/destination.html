@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Travel - Destinations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="destination_style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-paper-plane"></i> Wanderlust Travel
+                </a>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="destination.html" class="active">Destinations</a></li>
+                        <li><a href="aboutuspage.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Explore Our Destinations</h1>
+            <p>Discover amazing places around the world and plan your perfect getaway</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="search-box">
+            <form class="search-form">
+                <div class="form-group">
+                    <label for="destination">Destination</label>
+                    <input type="text" id="destination" placeholder="Where would you like to go?">
+                </div>
+                <div class="form-group">
+                    <label for="checkin">Check In</label>
+                    <input type="date" id="checkin">
+                </div>
+                <div class="form-group">
+                    <label for="checkout">Check Out</label>
+                    <input type="date" id="checkout">
+                </div>
+                <div class="form-group">
+                    <label for="guests">Travelers</label>
+                    <select id="guests">
+                        <option>1 Adult</option>
+                        <option>2 Adults</option>
+                        <option>2 Adults, 1 Child</option>
+                        <option>2 Adults, 2 Children</option>
+                        <option>More</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search Trips</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="continent-section">
+        <div class="container">
+            <div class="continent-header">
+                <h2>Popular Destinations</h2>
+            </div>
+            <div class="destinations-grid">
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="bali.jpg" alt="Bali">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Bali, Indonesia</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 7 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Asia</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="review-count">(487 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Experience the beautiful beaches, vibrant culture and serene temples of Bali.</p>
+                        <div class="price">$1,299 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="santorini.jpg" alt="Santorini">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Santorini, Greece</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 5 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Europe</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="review-count">(352 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Enjoy the stunning white architecture and breathtaking sunsets of Santorini.</p>
+                        <div class="price">$1,499 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="tokyo.jpg" alt="Tokyo">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Tokyo, Japan</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 8 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Asia</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="review-count">(412 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Discover the perfect blend of traditional culture and modern technology in Tokyo.</p>
+                        <div class="price">$1,799 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="continent-section">
+        <div class="container">
+            <div class="continent-header">
+                <h2>Asian Destinations</h2>
+            </div>
+            <div class="destinations-grid">
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="tokyo.jpg" alt="Tokyo">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Tokyo, Japan</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 8 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Asia</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="review-count">(412 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Discover the perfect blend of traditional culture and modern technology in Tokyo.</p>
+                        <div class="price">$1,799 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="phuket.jpg" alt="Phuket">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Phuket, Thailand</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 6 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Asia</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="review-count">(327 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Relax on pristine beaches and explore the vibrant nightlife of this Thai paradise.</p>
+                        <div class="price">$1,150 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="singapore.jpg" alt="Singapore">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Singapore</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 5 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Asia</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="review-count">(298 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Experience the futuristic city-state with its amazing architecture and diverse cuisine.</p>
+                        <div class="price">$1,350 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="continent-section">
+        <div class="container">
+            <div class="continent-header">
+                <h2>European Destinations</h2>
+            </div>
+            <div class="destinations-grid">
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="paris.jpg" alt="Paris">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Paris, France</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 6 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Europe</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="review-count">(512 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Fall in love with the City of Light - explore iconic landmarks and charming streets.</p>
+                        <div class="price">$1,650 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="rome.jpg" alt="Rome">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Rome, Italy</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 7 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Europe</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="review-count">(498 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Explore the "Eternal City" that is surrounded by glorious monuments and colossal remains.</p>
+                        <div class="price">$1,780 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-img">
+                        <img src="santorini.jpg" alt="Santorini">
+                    </div>
+                    <div class="destination-info">
+                        <h3>Santorini, Greece</h3>
+                        <div class="destination-specs">
+                            <span><i class="far fa-calendar"></i> 5 Days</span>
+                            <span><i class="far fa-user"></i> 2 People</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Europe</span>
+                        </div>
+                        <div class="destination-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="review-count">(352 reviews)</span>
+                        </div>
+                        <p class="destination-desc">Enjoy the stunning white architecture and breathtaking sunsets of Santorini.</p>
+                        <div class="price">$1,499 <small>/ per person</small></div>
+                        <div class="destination-buttons">
+                            <a href="#" class="book-btn">Book Now</a>
+                            <a href="#" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Wanderlust Travel</h3>
+                    <p>We specialize in creating unforgettable travel experiences for adventurers and relaxation-seekers alike.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="aboutuspage.html">About Us</a></li>
+                        <li><a href="destination.html">Destinations</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Top Destinations</h3>
+                    <ul>
+                        <li><a href="#">Bali, Indonesia</a></li>
+                        <li><a href="#">Santorini, Greece</a></li>
+                        <li><a href="#">Tokyo, Japan</a></li>
+                        <li><a href="#">Paris, France</a></li>
+                        <li><a href="#">Machu Picchu, Peru</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Alba Iulia, Romania</li>
+                        <li><i class="fas fa-phone"></i> 0258 123456</li>
+                        <li><i class="fas fa-envelope"></i> info@wanderlusttravel.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wanderlust Travel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="destinationscript.js"></script>
+</body>
+</html>
