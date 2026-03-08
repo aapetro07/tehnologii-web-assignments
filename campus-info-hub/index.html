@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Campus Info Hub</title>
+</head>
+<body>
+
+<h1>Campus Info Hub</h1>
+
+<nav>
+  <a href="index.html">Acasa</a> |
+  <a href="pages/library.html">Biblioteca</a> |
+  <a href="pages/cafeteria.html">Cantina</a> |
+  <a href="pages/events.html">Evenimente</a> |
+  <a href="https://www.uab.ro" target="_blank">Site Universitate</a>
+</nav>
+
+<hr>
+
+<h2>Toate resursele</h2>
+<ul id="lista-resurse">
+  <li>Se incarca...</li>
+</ul>
+
+<h2>Doar locuri de studiu</h2>
+<ul id="lista-studiu">
+  <li>Se incarca...</li>
+</ul>
+
+<h2>Toate tag-urile</h2>
+<p id="lista-taguri">Se incarca...</p>
+
+<script>
+  fetch("data/resources.json")
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(resurse) {
+
+      // 1. Toate resursele
+      var listaRe = document.getElementById("lista-resurse");
+      listaRe.innerHTML = "";
+      resurse.forEach(function(r) {
+        var li = document.createElement("li");
+        li.textContent = r.name + " — " + r.location + " (" + r.program + ")";
+        listaRe.appendChild(li);
+      });
+
+      // 2. Doar locurile de studiu
+      var listaStudiu = document.getElementById("lista-studiu");
+      listaStudiu.innerHTML = "";
+      var locuriStudiu = resurse.filter(function(r) {
+        return r.tags.includes("studiu");
+      });
+      locuriStudiu.forEach(function(r) {
+        var li = document.createElement("li");
+        li.textContent = r.name + " — " + r.location;
+        listaStudiu.appendChild(li);
+      });
+
+      // 3. Toate tag-urile unice
+      var toateTagurile = [];
+      resurse.forEach(function(r) {
+        r.tags.forEach(function(tag) {
+          if (!toateTagurile.includes(tag)) {
+            toateTagurile.push(tag);
+          }
+        });
+      });
+      document.getElementById("lista-taguri").textContent = toateTagurile.join(", ");
+
+    })
+    .catch(function(err) {
+      console.error("Eroare la incarcare JSON:", err);
+    });
+</script>
+
+</body>
+</html>

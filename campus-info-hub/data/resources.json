@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Biblioteca Centrala",
+    "type": "biblioteca",
+    "location": "Cladirea A, Etaj 1",
+    "program": "Luni-Vineri: 8:00-20:00, Sambata: 9:00-14:00",
+    "tags": ["studiu", "carti", "sala-lectura"]
+  },
+  {
+    "name": "Cantina Studenteasca",
+    "type": "cantina",
+    "location": "Cladirea B, Parter",
+    "program": "Luni-Vineri: 11:00-15:00",
+    "tags": ["mancare", "masa"]
+  },
+  {
+    "name": "Sala de Studiu 101",
+    "type": "sala-studiu",
+    "location": "Cladirea C, Etaj 2",
+    "program": "Luni-Duminica: 7:00-22:00",
+    "tags": ["studiu", "grupuri", "proiectoare"]
+  },
+  {
+    "name": "Cafeneaua Campus",
+    "type": "cantina",
+    "location": "Cladirea A, Parter",
+    "program": "Luni-Vineri: 7:30-18:00",
+    "tags": ["cafea", "gustari", "masa"]
+  },
+  {
+    "name": "Sala de Conferinte",
+    "type": "eveniment",
+    "location": "Cladirea D, Etaj 3",
+    "program": "La cerere",
+    "tags": ["evenimente", "conferinte", "prezentari"]
+  }
+]
