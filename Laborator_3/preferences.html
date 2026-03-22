@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setari Preferinte</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Setări Preferințe</h1>
+
+        <form id="form-preferinte">
+
+            <!-- Campul 1: Nume utilizator -> cookie 'username' -->
+            <div class="form-group">
+                <label for="input-username">Nume utilizator:</label>
+                <input type="text" id="input-username" placeholder="Ex: Ion Popescu">
+            </div>
+
+            <!-- Campul 2: Tema -> cookie 'theme' -->
+            <div class="form-group">
+                <label for="select-tema">Temă:</label>
+                <select id="select-tema">
+                    <option value="light">Luminos</option>
+                    <option value="dark">Întunecat</option>
+                </select>
+            </div>
+
+            <!-- Campul 3: Limba -> localStorage -->
+            <div class="form-group">
+                <label for="select-limba">Limbă:</label>
+                <select id="select-limba">
+                    <option value="ro">Română</option>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                </select>
+            </div>
+
+            <!-- Campul 4: Dimensiune font -> localStorage -->
+            <div class="form-group">
+                <label for="select-font">Dimensiune font:</label>
+                <select id="select-font">
+                    <option value="14">14px</option>
+                    <option value="16">16px</option>
+                    <option value="18">18px</option>
+                    <option value="20">20px</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btn-salveaza">Salveaza Preferintele</button>
+
+            <p id="mesaj-succes" class="alert-success" style="display: none">
+                Preferintele au fost salvate! Vei fi redirectionat...
+            </p>
+
+        </form>
+
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        // 2. Pre-populam campurile
+        const usernameSalvat = CookieManager.get('username') || '';
+        const temaSalvata = CookieManager.get('theme') || 'light';
+        const limbaSalvata = StorageManager.getLocal('limba') || 'ro';
+        const fontSalvat = StorageManager.getLocal('fontSize') || '16';
+
+        document.getElementById('input-username').value = usernameSalvat;
+        document.getElementById('select-tema').value = temaSalvata;
+        document.getElementById('select-limba').value = limbaSalvata;
+        document.getElementById('select-font').value = fontSalvat;
+
+        // 3. La submit - salvam si redirectionam
+        document.getElementById('form-preferinte').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('input-username').value.trim();
+            const tema = document.getElementById('select-tema').value;
+            const limba = document.getElementById('select-limba').value;
+            const font = document.getElementById('select-font').value;
+
+            // salvam in cookies
+            CookieManager.set('username', username, 365);
+            CookieManager.set('theme', tema, 365);
+
+            // salvam in localStorage
+            StorageManager.setLocal('limba', limba);
+            StorageManager.setLocal('fontSize', font);
+
+            // aplicam tema imediat
+            document.body.className = tema;
+
+            // afisam mesajul de succes
+            document.getElementById('mesaj-succes').style.display = 'block';
+
+            // redirectionam după 2 secunde
+            setTimeout(function() {
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+    </script>
+
+</body>
+</html>

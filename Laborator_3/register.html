@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Înregistrare</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Înregistrare</h1>
+
+        <form id="form-register">
+
+            <div class="form-group">
+                <label for="input-username">Username (minim 3 caractere):</label>
+                <input type="text" id="input-username" placeholder="Ex: ionpopescu">
+            </div>
+
+            <div class="form-group">
+                <label for="input-email">Email:</label>
+                <input type="email" id="input-email" placeholder="Ex: ion@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="input-password">Parolă (minim 6 caractere):</label>
+                <input type="password" id="input-password" placeholder="Parola ta">
+            </div>
+
+            <div class="form-group">
+                <label for="input-confirm">Confirmare parolă:</label>
+                <input type="password" id="input-confirm" placeholder="Repetă parola">
+            </div>
+
+            <button type="submit" id="btn-register">Înregistrează-te</button>
+
+            <!-- mesaje -->
+            <p id="mesaj-eroare" class="alert-error" style="display: none;"></p>
+            <p id="mesaj-succes" class="alert-success" style="display: none;"></p>
+
+        </form>
+
+        <p>Ai deja cont? <a href="login.html">Autentifică-te</a></p>
+
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        document.getElementById('form-register').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('input-username').value.trim();
+            const email = document.getElementById('input-email').value.trim();
+            const password = document.getElementById('input-password').value.trim();
+            const confirm = document.getElementById('input-confirm').value.trim();
+
+            const mesajEroare = document.getElementById('mesaj-eroare');
+            const mesajSucces = document.getElementById('mesaj-succes');
+
+            mesajEroare.style.display = 'none';
+            mesajSucces.style.display = 'none';
+
+            // Validare 1 - campuri goale
+            if (!username || !email || !password || !confirm) {
+                mesajEroare.textContent = 'Toate câmpurile sunt obligatorii!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // Validare 2 - username minim 3 caractere
+            if (username.length < 3) {
+                mesajEroare.textContent = 'Username-ul trebuie să aibă minim 3 caractere!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // Validare 3 - format email
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!emailValid) {
+                mesajEroare.textContent = 'Adresa de email nu este validă!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // Validare 4 - parola minim 6 caractere
+            if (password.length < 6) {
+                mesajEroare.textContent = 'Parola trebuie să aibă minim 6 caractere!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // Validare 5 - parolele coincid
+            if (password !== confirm) {
+                mesajEroare.textContent = 'Parolele nu coincid!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // citim utilizatorii existenti
+            const utilizatori = StorageManager.getLocal('users') || [];
+
+            // Validare 6 - username unic
+            const usernameExista = utilizatori.find(function(u) {
+                return u.username === username;
+            });
+            if (usernameExista) {
+                mesajEroare.textContent = 'Username-ul este deja folosit!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // Validare 7 - email unic
+            const emailExista = utilizatori.find(function(u) {
+                return u.email === email;
+            });
+            if (emailExista) {
+                mesajEroare.textContent = 'Email-ul este deja folosit!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // toate validarile au trecut - cream utilizatorul nou
+            const utilizatorNou = {
+                id: utilizatori.length + 1,
+                username: username,
+                password: password,
+                email: email
+            };
+
+            // adaugam in lista si salvam
+            utilizatori.push(utilizatorNou);
+            StorageManager.setLocal('users', utilizatori);
+
+            // afisam mesaj succes
+            mesajSucces.textContent = 'Cont creat cu succes! Vei fi redirecționat...';
+            mesajSucces.style.display = 'block';
+
+            // redirectionam catre login dupa 2 secunde
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autentificare</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Autentificare</h1>
+
+        <form id="form-login">
+
+            <div class="form-group">
+                <label for="input-username">Username:</label>
+                <input type="text" id="input-username" placeholder="Ex: admin">
+            </div>
+
+            <div class="form-group">
+                <label for="input-password">Parolă:</label>
+                <input type="password" id="input-password" placeholder="Parola ta">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="checkbox-remember">
+                    Ține-mă minte
+                </label>
+            </div>
+
+            <button type="submit" id="btn-login">Autentificare</button>
+
+            <!-- mesaj eroare -->
+            <p id="mesaj-eroare" class="alert-error" style="display: none;"></p>
+
+        </form>
+
+        <p>Nu ai cont? <a href="register.html">Înregistrează-te</a></p>
+
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        // aplicam tema
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        // la prima incarcare, daca nu exista utilizatori, ii cream
+        function initializeazaUtilizatori() {
+            const utilizatoriExistenti = StorageManager.getLocal('users');
+
+            if (!utilizatoriExistenti) {
+                const defaultUsers = [
+                    { id: 1, username: 'admin', password: 'password', email: 'admin@example.com' },
+                    { id: 2, username: 'student', password: 'student123', email: 'student@example.com' }
+                ];
+                StorageManager.setLocal('users', defaultUsers);
+                console.log('Utilizatori default creati!');
+            }
+        }
+
+        initializeazaUtilizatori();
+
+        // pre-populam username daca "tine-ma minte" a fost bifat
+        const usernameSalvat = StorageManager.getLocal('rememberedUser');
+        if (usernameSalvat) {
+            document.getElementById('input-username').value = usernameSalvat;
+            document.getElementById('checkbox-remember').checked = true;
+        }
+
+        // logica de autentificare
+        document.getElementById('form-login').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('input-username').value.trim();
+            const password = document.getElementById('input-password').value.trim();
+            const tineMinte = document.getElementById('checkbox-remember').checked;
+
+            const mesajEroare = document.getElementById('mesaj-eroare');
+
+            // verificam ca campurile nu sunt goale
+            if (!username || !password) {
+                mesajEroare.textContent = 'Completează toate câmpurile!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // citim lista de utilizatori din localStorage
+            const utilizatori = StorageManager.getLocal('users') || [];
+
+            // cautam utilizatorul cu username si parola potrivite
+            const utilizatorGasit = utilizatori.find(function(u) {
+                return u.username === username && u.password === password;
+            });
+
+            // daca nu gasim utilizatorul
+            if (!utilizatorGasit) {
+                mesajEroare.textContent = 'Username sau parolă incorecte!';
+                mesajEroare.style.display = 'block';
+                return;
+            }
+
+            // ascundem eroarea daca era afisata
+            mesajEroare.style.display = 'none';
+
+            // daca "tine-ma minte" e bifat, salvam username-ul
+            if (tineMinte) {
+                StorageManager.setLocal('rememberedUser', username);
+            } else {
+                StorageManager.removeLocal('rememberedUser');
+            }
+
+            // cream sesiunea in sessionStorage
+            const sesiune = {
+                userId: utilizatorGasit.id,
+                username: utilizatorGasit.username,
+                email: utilizatorGasit.email,
+                loginTime: new Date().toISOString(),
+                sessionId: Math.random().toString(36).substring(2) // id random
+            };
+            StorageManager.setSession('session', sesiune);
+
+            // redirectionam catre dashboard
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laborator 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="preferences.html">Setari Preferinte</a></li>
+            <li><a href="cookies-info.html">Vizualizare Cookies</a></li>
+            <li><a href="login.html">Autentificare</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <h1>Bun venit, <span id="username-display"></span>!</h1>
+        <p>Ai vizitat această pagină de <span id="visit-count"></span> ori.</p>
+
+        <button id="btn-sterge-tot" class="btn-danger">Sterge Tot</button>
+
+        <!-- Cerinta 5 - cookies -->
+        <h2>Cookie-uri Active</h2>
+        <table id="cookies-table">
+            <thead>
+                <tr>
+                    <th>Nume</th>
+                    <th>Valoare</th>
+                </tr>
+            </thead>
+            <tbody id="cookies-tbody"></tbody>
+        </table>
+
+        <!-- Cerinta 6 - localStorage -->
+        <h2>Date din localStorage</h2>
+        <table>
+            <thead>
+                <tr><th>Cheie</th><th>Valoare</th></tr>
+            </thead>
+            <tbody id="local-tbody"></tbody>
+        </table>
+
+        <!-- Cerinta 7 - sessionStorage -->
+        <h2>Date din sessionStorage</h2>
+        <table>
+            <thead>
+                <tr><th>Cheie</th><th>Valoare</th></tr>
+            </thead>
+            <tbody id="session-tbody"></tbody>
+        </table>
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        // Cerinta 3 - light or dark theme
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        // Cerinta 1 - nume utilizator
+        const username = CookieManager.get('username') || 'Vizitator';
+        document.getElementById('username-display').textContent = username;
+
+        // Cerinta 2 - numarare vizite
+        let visits = parseInt(CookieManager.get('visits')) || 0;
+        visits += 1;
+        CookieManager.set('visits', visits, 365);
+        document.getElementById('visit-count').textContent = visits;
+
+        //Cerinta 5 - tabel cookies
+        function afiseazaCookies() {
+            const tbody = document.getElementById('cookies-tbody');
+            const cookies = CookieManager.getAll();
+
+            tbody.innerHTML = '';
+
+            const cheile = Object.keys(cookies);
+
+            if (cheile.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">Nu există cookie-uri active.</td></tr>';
+                return;
+            }
+
+            cheile.forEach(function(nume) {
+                const valoare = cookies[nume];
+                const rand = document.createElement('tr');
+                rand.innerHTML = `
+                    <td>${nume}</td>
+                    <td>${valoare}</td>
+                `;
+                tbody.appendChild(rand);
+            });
+        }
+
+        // Cerinta 6 - tabel localStorage
+        function afiseazaLocalStorage() {
+            const tbody = document.getElementById('local-tbody');
+            const date = StorageManager.getAllLocal();
+            tbody.innerHTML = '';
+            const chei = Object.keys(date);
+            if (chei.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">Nu există date în localStorage.</td></tr>';
+                return;
+            }
+            chei.forEach(function(cheie) {
+                const valoare = typeof date[cheie] === 'object'
+                    ? JSON.stringify(date[cheie])
+                    : date[cheie];
+                const rand = document.createElement('tr');
+                rand.innerHTML = `<td>${cheie}</td><td>${valoare}</td>`;
+                tbody.appendChild(rand);
+            });
+        }
+
+        // Cerinta 7 - tabel sessionStorage
+        function afiseazaSessionStorage() {
+            const tbody = document.getElementById('session-tbody');
+            const date = StorageManager.getAllSession();
+            tbody.innerHTML = '';
+            const chei = Object.keys(date);
+            if (chei.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">Nu există date în sessionStorage.</td></tr>';
+                return;
+            }
+            chei.forEach(function(cheie) {
+                const valoare = typeof date[cheie] === 'object'
+                    ? JSON.stringify(date[cheie])
+                    : date[cheie];
+                const rand = document.createElement('tr');
+                rand.innerHTML = `<td>${cheie}</td><td>${valoare}</td>`;
+                tbody.appendChild(rand);
+            });
+        }
+
+        // Cerinta 8 - buton 
+        document.getElementById('btn-sterge-tot').addEventListener('click', function() {
+            const confirmat = confirm('Esti sigur? Se vor sterge toate cookies si datele din storage!');
+            if (!confirmat) return;
+
+            CookieManager.deleteAll();
+            StorageManager.clearLocal();
+            StorageManager.clearSession();
+
+            afiseazaCookies();
+            afiseazaLocalStorage();
+            afiseazaSessionStorage();
+
+            document.getElementById('username-display').textContent = 'Vizitator';
+            document.getElementById('visit-count').textContent = '0';
+
+            alert('Toate datele au fost sterse!');
+        });
+
+        afiseazaCookies();
+        afiseazaLocalStorage();
+        afiseazaSessionStorage();
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coș de Cumpărături</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Coș de Cumpărături</h1>
+
+        <!-- Cerinta 3 - formular adaugare -->
+        <h2>Adaugă Produs</h2>
+        <form id="form-cart">
+
+            <div class="form-group">
+                <label for="select-produs">Produs:</label>
+                <select id="select-produs">
+                    <option value="laptop">Laptop - 2500 RON</option>
+                    <option value="telefon">Telefon - 1200 RON</option>
+                    <option value="tableta">Tabletă - 800 RON</option>
+                    <option value="casti">Căști - 150 RON</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="input-cantitate">Cantitate (1-10):</label>
+                <input type="number" id="input-cantitate" value="1" min="1" max="10">
+            </div>
+
+            <button type="submit" id="btn-adauga">Adaugă în Coș</button>
+
+        </form>
+
+        <!-- Cerinta 4 - afisare cos -->
+        <h2>Produsele din Coș</h2>
+        <table id="tabel-cos">
+            <thead>
+                <tr>
+                    <th>Produs</th>
+                    <th>Cantitate</th>
+                    <th>Preț unitar</th>
+                    <th>Preț total</th>
+                    <th>Acțiune</th>
+                </tr>
+            </thead>
+            <tbody id="cos-tbody"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>TOTAL</strong></td>
+                    <td id="total-pret"><strong>0 RON</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <button id="btn-goleste" class="btn-danger">Golește Coșul</button>
+        <br><br>
+        <a href="dashboard.html">Înapoi la Dashboard</a>
+
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        // Cerinta 1 - verificam autentificarea
+        const sesiune = StorageManager.getSession('session');
+        if (!sesiune) {
+            window.location.href = 'login.html';
+        }
+
+        // Cerinta 2 - produsele disponibile
+        const products = {
+            laptop:  { name: 'Laptop',  price: 2500 },
+            telefon: { name: 'Telefon', price: 1200 },
+            tableta: { name: 'Tabletă', price: 800  },
+            casti:   { name: 'Căști',   price: 150  }
+        };
+
+        // Cerinta 5 - citim cosul din sessionStorage
+        function getCos() {
+            return StorageManager.getSession('cart') || {};
+        }
+
+        // Cerinta 5 - salvam cosul in sessionStorage
+        function saveCos(cos) {
+            StorageManager.setSession('cart', cos);
+        }
+
+        // Cerinta 4 - afisam cosul in tabel
+        function afiseazaCos() {
+            const tbody = document.getElementById('cos-tbody');
+            const cos = getCos();
+            const chei = Object.keys(cos);
+
+            tbody.innerHTML = '';
+
+            if (chei.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">Coșul este gol.</td></tr>';
+                document.getElementById('total-pret').innerHTML = '<strong>0 RON</strong>';
+                return;
+            }
+
+            let total = 0;
+
+            chei.forEach(function(cheie) {
+                const produs = products[cheie];
+                const cantitate = cos[cheie];
+                const pretTotal = produs.price * cantitate;
+                total += pretTotal;
+
+                const rand = document.createElement('tr');
+                rand.innerHTML = `
+                    <td>${produs.name}</td>
+                    <td>${cantitate}</td>
+                    <td>${produs.price} RON</td>
+                    <td>${pretTotal} RON</td>
+                    <td>
+                        <button class="btn-danger" onclick="stergeProdus('${cheie}')">
+                            Șterge
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(rand);
+            });
+
+            document.getElementById('total-pret').innerHTML = 
+                `<strong>${total} RON</strong>`;
+        }
+
+        // Cerinta 3 - adaugare produs in cos
+        document.getElementById('form-cart').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const cheie = document.getElementById('select-produs').value;
+            const cantitate = parseInt(document.getElementById('input-cantitate').value);
+
+            // validare cantitate
+            if (cantitate < 1 || cantitate > 10) {
+                alert('Cantitatea trebuie să fie între 1 și 10!');
+                return;
+            }
+
+            const cos = getCos();
+
+            // daca produsul exista deja, adunam cantitatea
+            if (cos[cheie]) {
+                cos[cheie] += cantitate;
+            } else {
+                cos[cheie] = cantitate;
+            }
+
+            saveCos(cos);
+            afiseazaCos();
+        });
+
+        // stergere produs individual
+        function stergeProdus(cheie) {
+            const cos = getCos();
+            delete cos[cheie];
+            saveCos(cos);
+            afiseazaCos();
+        }
+
+        // Cerinta 4 - golire cos
+        document.getElementById('btn-goleste').addEventListener('click', function() {
+            const confirmat = confirm('Ești sigur că vrei să golești coșul?');
+            if (!confirmat) return;
+            StorageManager.removeSession('cart');
+            afiseazaCos();
+        });
+
+        // afisam cosul la incarcarea paginii
+        afiseazaCos();
+
+    </script>
+
+</body>
+</html>

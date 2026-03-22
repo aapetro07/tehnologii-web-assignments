@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dashboard</h1>
+
+        <!-- Cerinta 2 - informatii sesiune -->
+        <h2>Informații Sesiune</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Proprietate</th>
+                    <th>Valoare</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ID Sesiune</strong></td>
+                    <td id="session-id"></td>
+                </tr>
+                <tr>
+                    <td><strong>Username</strong></td>
+                    <td id="session-username"></td>
+                </tr>
+                <tr>
+                    <td><strong>Email</strong></td>
+                    <td id="session-email"></td>
+                </tr>
+                <tr>
+                    <td><strong>Ora autentificării</strong></td>
+                    <td id="session-login-time"></td>
+                </tr>
+                <tr>
+                    <td><strong>Durată sesiune</strong></td>
+                    <td id="session-duration"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Cerinta 3 - date brute sessionStorage -->
+        <h2>Date brute sessionStorage</h2>
+        <pre id="raw-session"></pre>
+
+        <!-- Cerinta 4 - link cos si buton deconectare -->
+        <a href="cart.html">Coș de Cumpărături</a>
+        <br><br>
+        <button id="btn-logout" class="btn-danger">Deconectare</button>
+
+        <!-- Cerinta 5 - experiment tab nou -->
+        <h2>Experiment sessionStorage</h2>
+        <p>Deschide dashboard-ul într-un tab nou și observă că sessionStorage este diferit!</p>
+        <a href="dashboard.html" target="_blank">Deschide într-un tab nou</a>
+
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+
+        // aplicam tema
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        // Cerinta 1 - verificam autentificarea
+        const sesiune = StorageManager.getSession('session');
+        if (!sesiune) {
+            // nu exista sesiune, redirectionam la login
+            window.location.href = 'login.html';
+        }
+
+        // Cerinta 2 - afisam informatiile sesiunii
+        document.getElementById('session-id').textContent = sesiune.sessionId;
+        document.getElementById('session-username').textContent = sesiune.username;
+        document.getElementById('session-email').textContent = sesiune.email;
+
+        // formatam ora autentificarii
+        const oraLogin = new Date(sesiune.loginTime);
+        document.getElementById('session-login-time').textContent = 
+            oraLogin.toLocaleString('ro-RO');
+
+        // Cerinta 3 - afisam datele brute
+        document.getElementById('raw-session').textContent = 
+            JSON.stringify(StorageManager.getAllSession(), null, 2);
+
+        // Cerinta 2 - durata sesiunii actualizata la fiecare secunda
+        function actualizeazaDurata() {
+            const acum = new Date();
+            const diferenta = Math.floor((acum - oraLogin) / 1000); // in secunde
+
+            const ore = Math.floor(diferenta / 3600);
+            const minute = Math.floor((diferenta % 3600) / 60);
+            const secunde = diferenta % 60;
+
+            document.getElementById('session-duration').textContent = 
+                `${ore}h ${minute}m ${secunde}s`;
+        }
+
+        // apelam imediat si apoi la fiecare secunda
+        actualizeazaDurata();
+        setInterval(actualizeazaDurata, 1000);
+
+        // Cerinta 4 - buton deconectare
+        document.getElementById('btn-logout').addEventListener('click', function() {
+            StorageManager.clearSession();
+            window.location.href = 'login.html';
+        });
+
+    </script>
+
+</body>
+</html>

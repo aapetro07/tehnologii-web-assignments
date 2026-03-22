@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatii Cookies</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Informatii despre Stocare</h1>
+
+        <!-- Sectiunea Cookies -->
+        <h2>Cookies</h2>
+
+        <!-- Valoarea bruta -->
+        <p><strong>Valoare bruta document.cookie:</strong></p>
+        <p id="raw-cookies"></p>
+
+        <!-- Tabel cookies -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Nume</th>
+                    <th>Valoare</th>
+                    <th>Lungime</th>
+                    <th>Actiune</th>
+                </tr>
+            </thead>
+            <tbody id="cookies-tbody"></tbody>
+        </table>
+
+        <!-- Sectiunea localStorage -->
+        <h2>localStorage</h2>
+
+        <!-- JSON formatat -->
+        <p><strong>Toate datele din localStorage:</strong></p>
+        <pre id="raw-local"></pre>
+
+        <!-- Tabel localStorage -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Cheie</th>
+                    <th>Valoare</th>
+                    <th>Dimensiune</th>
+                    <th>Actiune</th>
+                </tr>
+            </thead>
+            <tbody id="local-tbody"></tbody>
+        </table>
+
+        <!-- Sectiunea sessionStorage -->
+        <h2>sessionStorage</h2>
+
+        <!-- JSON formatat -->
+        <p><strong>Toate datele din sessionStorage:</strong></p>
+        <pre id="raw-session"></pre>
+
+        <!-- Tabel sessionStorage -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Cheie</th>
+                    <th>Valoare</th>
+                    <th>Dimensiune</th>
+                    <th>Actiune</th>
+                </tr>
+            </thead>
+            <tbody id="session-tbody"></tbody>
+        </table>
+
+        <!-- Tabel comparativ -->
+        <h2>Comparatie: Cookies vs localStorage vs sessionStorage</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Caracteristica</th>
+                    <th>Cookies</th>
+                    <th>localStorage</th>
+                    <th>sessionStorage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Capacitate</strong></td>
+                    <td>~4 KB</td>
+                    <td>~5-10 MB</td>
+                    <td>~5-10 MB</td>
+                </tr>
+                <tr>
+                    <td><strong>Expirare</strong></td>
+                    <td>Setata manual</td>
+                    <td>Niciodata (persistenta)</td>
+                    <td>La inchiderea tab-ului</td>
+                </tr>
+                <tr>
+                    <td><strong>Trimis la server?</strong></td>
+                    <td>✔ Da, automat</td>
+                    <td>✘ Nu</td>
+                    <td>✘ Nu</td>
+                </tr>
+                <tr>
+                    <td><strong>Accesibil din?</strong></td>
+                    <td>Browser + Server</td>
+                    <td>Doar Browser</td>
+                    <td>Doar Browser</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+
+        // aplicam tema
+        const theme = CookieManager.get('theme') || 'light';
+        document.body.className = theme;
+
+        // afisam valoarea bruta
+        document.getElementById('raw-cookies').textContent = 
+            document.cookie || 'Nu există cookies.';
+
+        // construim tabelul
+        function afiseazaCookies() {
+            const tbody = document.getElementById('cookies-tbody');
+            const cookies = CookieManager.getAll();
+            const chei = Object.keys(cookies);
+
+            tbody.innerHTML = '';
+
+            if (chei.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">Nu există cookies active.</td></tr>';
+                return;
+            }
+
+            chei.forEach(function(nume) {
+                const valoare = cookies[nume];
+                const lungime = valoare.length;
+
+                const rand = document.createElement('tr');
+                rand.innerHTML = `
+                    <td>${nume}</td>
+                    <td>${valoare}</td>
+                    <td>${lungime}</td>
+                    <td>
+                        <button class="btn-danger" onclick="stergeCookie('${nume}')">
+                            Șterge
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(rand);
+            });
+        }
+
+        // functia de stergere cookie individual
+        function stergeCookie(nume) {
+            CookieManager.delete(nume);
+            // reimprospatam tabelul si valoarea bruta
+            afiseazaCookies();
+            document.getElementById('raw-cookies').textContent = 
+                document.cookie || 'Nu există cookies.';
+        }
+
+        // afisam JSON formatat
+        function afiseazaRawLocal() {
+            const date = StorageManager.getAllLocal();
+            document.getElementById('raw-local').textContent = 
+                Object.keys(date).length === 0 
+                    ? 'Nu există date în localStorage.' 
+                    : JSON.stringify(date, null, 2); // null, 2 = indentat frumos
+        }
+
+        // construim tabelul
+        function afiseazaLocalStorage() {
+            const tbody = document.getElementById('local-tbody');
+            const date = StorageManager.getAllLocal();
+            const chei = Object.keys(date);
+
+            tbody.innerHTML = '';
+
+            if (chei.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">Nu există date în localStorage.</td></tr>';
+                return;
+            }
+
+            chei.forEach(function(cheie) {
+                // valoarea o transformam in text ca sa putem calcula dimensiunea
+                const valoareText = typeof date[cheie] === 'object'
+                    ? JSON.stringify(date[cheie])
+                    : String(date[cheie]);
+
+                const dimensiune = valoareText.length + ' caractere';
+
+                const rand = document.createElement('tr');
+                rand.innerHTML = `
+                    <td>${cheie}</td>
+                    <td>${valoareText}</td>
+                    <td>${dimensiune}</td>
+                    <td>
+                        <button class="btn-danger" onclick="stergeLocal('${cheie}')">
+                            Șterge
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(rand);
+            });
+        }
+
+        // functia de stergere din localStorage
+        function stergeLocal(cheie) {
+            StorageManager.removeLocal(cheie);
+            // reimprospatam tabelul si JSON-ul
+            afiseazaLocalStorage();
+            afiseazaRawLocal();
+        }
+
+        // afisam JSON formatat
+        function afiseazaRawSession() {
+            const date = StorageManager.getAllSession();
+            document.getElementById('raw-session').textContent =
+                Object.keys(date).length === 0
+                    ? 'Nu există date în sessionStorage.'
+                    : JSON.stringify(date, null, 2);
+        }
+
+        // construim tabelul
+        function afiseazaSessionStorage() {
+            const tbody = document.getElementById('session-tbody');
+            const date = StorageManager.getAllSession();
+            const chei = Object.keys(date);
+
+            tbody.innerHTML = '';
+
+            if (chei.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">Nu există date în sessionStorage.</td></tr>';
+                return;
+            }
+
+            chei.forEach(function(cheie) {
+                const valoareText = typeof date[cheie] === 'object'
+                    ? JSON.stringify(date[cheie])
+                    : String(date[cheie]);
+
+                const dimensiune = valoareText.length + ' caractere';
+
+                const rand = document.createElement('tr');
+                rand.innerHTML = `
+                    <td>${cheie}</td>
+                    <td>${valoareText}</td>
+                    <td>${dimensiune}</td>
+                    <td>
+                        <button class="btn-danger" onclick="stergeSession('${cheie}')">
+                            Șterge
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(rand);
+            });
+        }
+
+        // functia de stergere din sessionStorage
+        function stergeSession(cheie) {
+            StorageManager.removeSession(cheie);
+            afiseazaSessionStorage();
+            afiseazaRawSession();
+        }
+
+        afiseazaCookies();
+        afiseazaLocalStorage();
+        afiseazaRawLocal();
+        afiseazaSessionStorage();
+        afiseazaRawSession();
+
+    </script>
+
+</body>
+</html>
